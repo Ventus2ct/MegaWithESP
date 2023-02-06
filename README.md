@@ -16,7 +16,7 @@ AT Test
 
 Program for WiFi
 
-![Program for WiFi](images/program.png)
+![Program for WiFi](images/Program.png)
 
 Run
 !(images/run.png)

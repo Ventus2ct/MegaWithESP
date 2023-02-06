@@ -1,6 +1,6 @@
-# Heading 1
+# MEGA with ESP: Mega WiFi 2560 R3  
 
-Mega with ESP: mega wifi r3 atmega2560 
+Project uses a MEGA clone orders on AliExpress
 
 ## Heading 2 text
   

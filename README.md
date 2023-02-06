@@ -1,7 +1,20 @@
 # MEGA with ESP: Mega WiFi 2560 R3  
 
-Project uses a MEGA clone orders on AliExpress
+Project uses a MEGA clone ordered on AliExpress
 
-## Heading 2 text
+## Preparing ESP 8266
   
-Hello world!
+### Flashing ESP 8266
+
+Dip swtch for Flash 
+|                   | 1 |   2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-------------------|---|---|---|---|---------------|
+| Connec to ESP8266 | OFF | OFF | OFF | OFF |  ON |  ON |  ON | ON |
+|   |   |   |   |   |
+|   |   |   |   |   |
+
+|                   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-------------------|---|---|---|---|---------------|
+|                   | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+
+![Flash](images/flash.png)

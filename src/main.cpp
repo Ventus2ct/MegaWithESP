@@ -12,8 +12,7 @@ void setup() {
   
   Serial.println("Staring");
   espm.SetSSID("aSid-Net","saab_9-5");
-  //                       12345678 MUST have 8 characters 
-  //espm.setupNet();
+  //        NOTE: password 12345678 MUST have 8 characters 
   espm.setupAPStation();
   Serial.println("staring Web");
 }

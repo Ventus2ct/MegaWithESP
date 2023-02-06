@@ -91,21 +91,6 @@ void EspNetForMega::setupAPStation()
 
     Serial.println("Setting up AP");
 
-    // while (WiFi.status() != WL_CONNECTED) {                         // attempt to connect to WiFi network
-    //     // Serial.print("Attempting to connect to WPA SSID: ");    // Print message to serial monitor
-    //     // Serial.println(ssidName);                                   // Print SSID to serial monitor
-    //     Serial.print("\r. "+String(i));
-    //     WiFi_status = WiFi.begin(ssidName, passWord);
-    //     i +=1;                        // Connect to WPA/WPA2 network
-    // }
-
-    // WiFi.setPersistent(); // set the following settings as persistent
-    // WiFi.endAP();
-
-    //Serial.println("Connected, setting up AP");
-    // set the following settings as persistent
-    // WiFi_status = WiFi.beginEnterprise()
-    // WiFi.encryptionType()
     WiFi_status = WiFi.beginAP(ssidName, passWord );
 
     if (WiFi_status == WL_AP_LISTENING) {
@@ -210,7 +195,7 @@ void EspNetForMega::poll()
     if(client)
     {
         line = client.readStringUntil('\r');
-        
+        // test if post has 
         if(line.indexOf("heat=on") > -1) // strstr(line,"on"))
         {
            Serial.println("On detected"); 
@@ -235,17 +220,12 @@ void EspNetForMega::poll()
            Serial.println();
            LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
         }
-        // if(line.indexOf("favicon") > -1)
-        // {
-        // We execute the action with the value passed in the request
-            //execute(getAction(line), getValue(request));
-            //execute(getAction(WifiRequest), getvalue(WifiRequest));
-            //Serial.println("Sending response to: " + String(request)) ;
-            m=MainPage();
-            // Serial.println(m);
-            client.print(m);
-            delay(100);
-        // }
+        
+        m=MainPage();
+        // Serial.println(m);
+        client.print(m);
+        delay(100);
+        
     }
     client.stop();
 }
@@ -268,9 +248,7 @@ void EspNetForMega::pollold()
     if(client)
     {
         char* request = readRequest(client);
-        //char request[500] = readRequest(client);
-        //String WifiRequest = client.readStringUntil('\n');
-        //if(WifiRequest.indexOf("favicon")== NULL)
+
         
         if(strstr(request,"on"))
         {
@@ -296,64 +274,8 @@ void EspNetForMega::pollold()
     client.stop();
 }
 
-void EspNetForMega::execute(String action, String value)
-{
-    //if(myDebug) {
-        Serial.println("Pin / Action; " + String(value) + "/" + String(action));
-        //}
-    //If it's one of the two actions we expect
-    if(action == "on" || action == "off")
-    {
-        Serial.println("Inside 'action'" );
-        //The relays are numbered starting from 1, max the array starts from 0 so we take 1
-        int index = value.toInt() - 1;
-        //The pin number will be the index plus the pin number where the relays start.
-        //Relays must be in sequence from the start pin (FIRST_PIN)
-        // int pinNumber = index;
-        int status = action == "on" ? HIGH : LOW;
-        if(action == "on")
-            BlinkLed(true);
-        else
-            BlinkLed(false);
-    }
-}
-//Returns the action the client wants to perform (on off)
-String EspNetForMega::getAction(char *request)
-{
-    if(myDebug) {Serial.println("GetAction: " + String(request));}
-    return getStringBetween(request, '?', '=');
-}
-//Returns the value (relay number) that the action will be executed
-String EspNetForMega::getValue(char *request)
-{
-    return getStringBetween(request, '=', ' ');
-}
 
-String EspNetForMega::getStringBetween(char* input, char start, char end)
-{
-    String str = "";
-    //returns the memory address of the 'start' character
-    Serial.println("Get between " + String(start) + " and " + String(end) + " in string " + String(input));
-    char* c = strchr(input, start);
-
-    //If you didn't find the character
-    if(c == NULL)
-    {
-        return "";
-    }
-
-    //Goes to the next character
-    c++;
-
-    //While not reaching the 'end' character or the end of the string
-    while(*c != end && *c!='\0')
-    {
-        str += *c;
-        c++;
-    }
-
-    return str;
-}
+/* create web page*/
 String EspNetForMega::MainPage()
 {
     //index_html=R"rawliteral(
@@ -399,51 +321,7 @@ String EspNetForMega::MainPage()
     ptr +="</body></html>";
     return ptr;
 }
-//Reads the first line of the request
-char* EspNetForMega::readRequest(WiFiClient client)
-{
-    bool currentLineIsBlank = true;
-    char request[500];
-    int i = 0;
-    bool firstLine = true;
 
-    while (client.connected()){
-        if(client.available()){
-            char c = client.read();
-            // Serial.write(c);
-
-            // Only the first line of the request interests us.
-            if(firstLine){
-                request[i] = c;
-                i++;
-            }
-
-            if (c == '\n'){
-                //The last line of the request is a \r\n by itself, after the \r\n of the previous line
-                if(currentLineIsBlank)
-                {
-                    // readRequest;
-                    //If you got here, it's because the request was read in full
-                    break;
-                }
-
-                currentLineIsBlank = true;
-                firstLine = false;
-            }
-            else if (c != '\r'){
-                //If you read any character other than \n the \r means that the line is not blank
-                currentLineIsBlank = false;
-            }
-            // request[i] = c;
-            //     i++;
-        }
-    }
-    Serial.println("--Request----------------");
-    Serial.println(String(request));
-    Serial.println("--END--------------------");
-    request[i+1] = '\0';
-    return request;
-}
 void EspNetForMega::SetSSID(char *SSID, char *pass)
 {
     ssidName = SSID;

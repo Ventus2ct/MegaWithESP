@@ -29,11 +29,6 @@ private:
     void printCurrentNet();
     void printWifiData();
     String MainPage();
-    char* readRequest(WiFiClient client);
-    void execute(String action, String value);
-    String getAction(char *request);
-    String getStringBetween(char* input, char start, char end);
-    String getValue(char *request);
     int WiFi_status;              // the Wifi radio's status
     void printApStatus();
     void printMacAddress(byte mac[]);

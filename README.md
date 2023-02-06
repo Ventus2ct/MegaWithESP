@@ -3,6 +3,7 @@
 Project uses a MEGA clone ordered on AliExpress.
 
 The project is a class development to make a WiFi AP and have a web server to enable control of hardware.
+It's a wrap class for ESP8266 Embedded on MEGA or Mega With ESP-01 S
 
 ## Preparing ESP 8266
   

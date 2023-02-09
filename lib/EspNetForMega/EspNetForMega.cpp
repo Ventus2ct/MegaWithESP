@@ -203,6 +203,7 @@ void EspNetForMega::poll()
            BlinkLed(true);
            // Turn relay on
            digitalWrite(3, LOW);
+           digitalWrite(4, LOW);
         }
       
         if(line.indexOf("heat=off") > -1)
@@ -212,6 +213,7 @@ void EspNetForMega::poll()
            BlinkLed(false);
         // Turn relay off
            digitalWrite(3, HIGH);
+           digitalWrite(4, HIGH);
         }
         //power=off
         if(line.indexOf("power=off") > -1)
@@ -226,50 +228,6 @@ void EspNetForMega::poll()
         client.print(m);
         delay(100);
         
-    }
-    client.stop();
-}
-
-/* Call from loop() */
-void EspNetForMega::pollold()
-{
-
-    // See class myDebug=true;
-    WiFiClient client = server.available();
-    String m = "";
-    boolean currentLineIsBlank = true;
-
-    // if(myDebug){
-    //     Serial.print("\rIs A client connected: ");
-    //     Serial.print(client.connected());
-    //     Serial.print( ", ");
-    // }
-
-    if(client)
-    {
-        char* request = readRequest(client);
-
-        
-        if(strstr(request,"on"))
-        {
-           Serial.println("On detected"); 
-        }
-      
-        if(strstr(request,"off"))
-        {
-           Serial.println("Off detected"); 
-        }
-        if(strstr(request, "favicon") == NULL)
-        {
-        // We execute the action with the value passed in the request
-            execute(getAction(request), getValue(request));
-            //execute(getAction(WifiRequest), getvalue(WifiRequest));
-            Serial.println("Sending response to: " + String(request)) ;
-            m=MainPage();
-            // Serial.println(m);
-            client.print(m);
-            delay(100);
-        }
     }
     client.stop();
 }
